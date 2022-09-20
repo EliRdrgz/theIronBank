@@ -1,11 +1,15 @@
 package com.example.theironbank2.service;
 
 import com.example.theironbank2.dto.CheckingAccountDTO;
+import com.example.theironbank2.dto.SavingsAccountDTO;
+import com.example.theironbank2.dto.TransferDTO;
 import com.example.theironbank2.enums.AccountType;
 import com.example.theironbank2.model.AccountHolder;
 import com.example.theironbank2.model.CheckingAccount;
+import com.example.theironbank2.model.SavingsAccount;
 import com.example.theironbank2.repository.AccountHolderRepository;
 import com.example.theironbank2.repository.CheckingAccountRepository;
+import com.example.theironbank2.repository.SavingsAccountRepository;
 import com.example.theironbank2.security.requests.CreateAccountRequest;
 
 import com.example.theironbank2.security.requests.ReadBalanceRequest;
@@ -13,7 +17,6 @@ import com.example.theironbank2.security.requests.TransferRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -25,6 +28,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     CheckingAccountRepository checkingAccountRepository;
+
+    @Autowired
+    SavingsAccountRepository savingsAccountRepository;
 
 
     @Override
@@ -56,7 +62,36 @@ public class AdminServiceImpl implements AdminService {
        }
 
     }
-    //TODO PRINCIPAL
+
+    @Override
+    public SavingsAccountDTO createSavingsAccount(CreateAccountRequest createAccountRequest) {
+        var ownerId = createAccountRequest.getAccountHolderId();
+        var type = createAccountRequest.getAccountType();
+        Optional<AccountHolder> owner = accountHolderRepository.findById(ownerId);
+        if (owner.isEmpty()) {
+            throw new RuntimeException("Owner not found. Please try again or create a new owner.");
+        } else {
+            if(type == AccountType.SAVINGS) {
+                var entity = new SavingsAccount();
+                entity.setBalance(createAccountRequest.getBalance());
+                entity.setPrimaryOwner(owner.get());
+                entity.setStatus(createAccountRequest.getStatus());
+                var storedCheckingAccount = savingsAccountRepository.save(entity);
+                var savingsAccountDTO = new SavingsAccountDTO();
+                savingsAccountDTO.setId(storedCheckingAccount.getId());
+                savingsAccountDTO.setCreationDate(storedCheckingAccount.getCreationDate());
+                savingsAccountDTO.setBalance(storedCheckingAccount.getBalance());
+                savingsAccountDTO.setPrimaryOwner(storedCheckingAccount.getPrimaryOwner());
+                savingsAccountDTO.setStatus(String.valueOf(storedCheckingAccount.getStatus()));
+                return savingsAccountDTO;
+
+            } else{
+                throw new RuntimeException("Account type not found. Please try again or create a new account type.");
+            }
+        }
+
+    }
+
     @Override
     public Optional<CheckingAccount> checkBalance(ReadBalanceRequest readBalanceRequest) {
         var accountId = readBalanceRequest.getAccountId();
@@ -76,47 +111,32 @@ public class AdminServiceImpl implements AdminService {
 
         }
     }
-//I want to add a method to transfer money from one account to another.
+
     @Override
-    public void makeTransfer(TransferRequest transferRequest) {
-        var fromAccount = checkingAccountRepository.findById(transferRequest.getFromAccount());
-        var toAccount = checkingAccountRepository.findById(transferRequest.getToAccount());
+    public TransferDTO makeTransfer(TransferRequest transferRequest) {
+        var fromAccount = checkingAccountRepository.findById(transferRequest.getOriginAccount());
+        var toAccount = checkingAccountRepository.findById(transferRequest.getDestinationAccount());
         if (fromAccount.isEmpty()) {
             throw new RuntimeException("From account not found. Please try again or create a new account.");
         } else if (toAccount.isEmpty()) {
             throw new RuntimeException("To account not found. Please try again or create a new account.");
-        } else if (fromAccount.get().getBalance().compareTo(transferRequest.getAmount()) > 1) {
+        } else if (fromAccount.get().getBalance().compareTo(transferRequest.getAmount()) < 1) {
             throw new RuntimeException("Insufficient funds. Please try again or create a new account.");
         } else {
             var fromAccountBalance = fromAccount.get().getBalance();
             var toAccountBalance = toAccount.get().getBalance();
             fromAccount.get().setBalance(fromAccountBalance.subtract(transferRequest.getAmount()));
             toAccount.get().setBalance(toAccountBalance.add(transferRequest.getAmount()));
-            System.out.println("Transfer successful");
-            System.out.println("From account balance: " + fromAccount.get().getBalance());
-            System.out.println("To account balance: " + toAccount.get().getBalance());
             checkingAccountRepository.save(fromAccount.get());
             checkingAccountRepository.save(toAccount.get());
+            var transferDTO = new TransferDTO();
+            transferDTO.setStatus("Transfer successful");
+            transferDTO.setFromAccount(String.valueOf(fromAccount.get().getId()));
+            transferDTO.setToAccount(String.valueOf(toAccount.get().getId()));
+            transferDTO.setAmount(transferRequest.getAmount());
+            transferDTO.setDescription(transferRequest.getDescription());
+            return transferDTO;
 
         }
     }
-
-//    @Override
-//    public CheckingAccountDTO makeTransfer(ReadBalanceRequest readBalanceRequest, Principal principal) {
-//        return null;
-//    }
-
-//    I want to create a method to make a transfer between two accounts from different holders.
-
-
-
-
-//    @Override
-//    public CheckingAccountDTO modifyBalance(CreateUserRequest.ModifyBalanceRequest modifyBalanceRequest) {
-//        var ownerId = modifyBalanceRequest.getAccountId();
-//
-//
-//
-//        return null;
-//    }
 }

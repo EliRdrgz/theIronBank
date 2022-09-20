@@ -2,6 +2,8 @@ package com.example.theironbank2.controller;
 
 import com.example.theironbank2.dto.CheckingAccountDTO;
 
+import com.example.theironbank2.dto.SavingsAccountDTO;
+import com.example.theironbank2.dto.TransferDTO;
 import com.example.theironbank2.model.CheckingAccount;
 import com.example.theironbank2.security.requests.CreateAccountRequest;
 import com.example.theironbank2.security.requests.CreateUserRequest;
@@ -49,19 +51,20 @@ public class AdminController {
     }
 
 
-    @PostMapping("/create/account")
+    @PostMapping("/create/checking-account")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public CheckingAccountDTO createAccount(@RequestBody CreateAccountRequest createAccountRequest ) {
         return adminService.createAccount(createAccountRequest);
     }
-//    @PostMapping("/modify-balance")
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public CheckingAccountDTO modifyBalance(@RequestBody CreateUserRequest.ModifyBalanceRequest modifyBalanceRequest ) {
-//        return adminService.modifyBalance(modifyBalanceRequest);
-//    }
+
+    @PostMapping("/create/savings-account")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public SavingsAccountDTO createSavingsAccount(@RequestBody CreateAccountRequest createAccountRequest ) {
+        return adminService.createSavingsAccount(createAccountRequest);
+    }
 
 
-    @PostMapping("/balance")
+    @GetMapping("/balance")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Optional<CheckingAccount> checkBalance(@RequestBody ReadBalanceRequest readBalanceRequest ) {
         return adminService.checkBalance(readBalanceRequest);
@@ -69,8 +72,8 @@ public class AdminController {
 
     @PostMapping("/transfer")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void makeTransfer(@RequestBody TransferRequest transferRequest ) {
-        adminService.makeTransfer(transferRequest);
+    public TransferDTO makeTransfer(@RequestBody TransferRequest transferRequest ) {
+       return adminService.makeTransfer(transferRequest);
     }
 
 }

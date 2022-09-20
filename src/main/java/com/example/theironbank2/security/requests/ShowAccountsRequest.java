@@ -5,19 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransferRequest {
+public class ShowAccountsRequest {
 
-    private Long originAccount;
-    private Long destinationAccount;
-    private BigDecimal amount;
-    private String description;
+        private Long accountHolderId;
 
 
-
+        public Long getAccountId() {
+                return accountHolderId;
+        }
 }
