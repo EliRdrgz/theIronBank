@@ -13,12 +13,9 @@ import java.util.Optional;
 
 public interface CheckingAccountService {
 
-    //    I want to create a method to find all accounts by primary owner that is the user logged in.
     List<CheckingAccountDTO> findAllByPrimaryOwner(Principal principal);
 
     CheckingAccountDTO create(CheckingAccountDTO checkingAccountDTO);
-
-
 
     CheckingAccountDTO createAccount(CreateAccountRequest createAccountRequest);
 

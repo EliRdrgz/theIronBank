@@ -76,4 +76,10 @@ public class AdminController {
        return adminService.makeTransfer(transferRequest);
     }
 
+    @PostMapping("/save-money")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public TransferDTO saveMoney(@RequestBody TransferRequest transferRequest ) {
+       return adminService.saveMoney(transferRequest);
+    }
+
 }

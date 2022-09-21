@@ -1,8 +1,10 @@
 package com.example.theironbank2.controller;
 
 import com.example.theironbank2.dto.CheckingAccountDTO;
+import com.example.theironbank2.dto.SavingsAccountDTO;
 import com.example.theironbank2.model.AccountHolder;
 import com.example.theironbank2.model.CheckingAccount;
+import com.example.theironbank2.model.SavingsAccount;
 import com.example.theironbank2.security.config.KeycloakProvider;
 import com.example.theironbank2.security.requests.LoginRequest;
 import com.example.theironbank2.security.requests.ReadBalanceRequest;
@@ -10,6 +12,7 @@ import com.example.theironbank2.security.requests.ShowAccountsRequest;
 import com.example.theironbank2.security.requests.TransferRequest;
 import com.example.theironbank2.service.AccountHolderService;
 import com.example.theironbank2.service.CheckingAccountService;
+import com.example.theironbank2.service.SavingsAccountService;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,9 @@ public class UserController {
 
     @Autowired
     CheckingAccountService checkingAccountService;
+
+    @Autowired
+    SavingsAccountService savingsAccountService;
 
     private final KeycloakProvider kcProvider;
 
@@ -66,10 +72,31 @@ public class UserController {
         accountHolderService.makeTransfer(transferRequest, principal);
     }
 
-    @GetMapping("/show-my-accounts")
+    //TODO: fix this method
+
+    @GetMapping("/show-my-checkingaccounts")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<CheckingAccountDTO> showMyAccounts(Principal principal) {
         return checkingAccountService.findAllByPrimaryOwner(principal);
+    }
+
+    //TODO: fix this method
+    @GetMapping("/show-my-savingsaccounts")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<SavingsAccountDTO> showMySavingsAccounts(Principal principal) {
+        return savingsAccountService.findAllByPrimaryOwner(principal);
+    }
+
+    @PostMapping("/save-money")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void saveMoney(@RequestBody TransferRequest transferRequest, Principal principal) {
+        accountHolderService.saveMoney(transferRequest, principal);
+    }
+
+    @PostMapping("/withdraw-money")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void withdrawMoney(@RequestBody TransferRequest transferRequest, Principal principal) {
+        accountHolderService.withdrawMoney(transferRequest, principal);
     }
 
 }

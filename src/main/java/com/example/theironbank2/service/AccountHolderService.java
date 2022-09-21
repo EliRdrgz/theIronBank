@@ -2,6 +2,7 @@ package com.example.theironbank2.service;
 
 import com.example.theironbank2.dto.AccountHolderDTO;
 import com.example.theironbank2.dto.CheckingAccountDTO;
+import com.example.theironbank2.dto.TransferDTO;
 import com.example.theironbank2.model.CheckingAccount;
 import com.example.theironbank2.repository.AccountHolderRepository;
 import com.example.theironbank2.security.requests.ReadBalanceRequest;
@@ -22,4 +23,9 @@ public interface AccountHolderService {
     void makeTransfer(TransferRequest transferRequest, Principal principal);
 
 
+//    List<CheckingAccount> showMyAccounts(ShowAccountsRequest showAccountsRequest, Principal principal);
+
+    TransferDTO saveMoney(TransferRequest transferRequest, Principal principal);
+
+    TransferDTO withdrawMoney(TransferRequest transferRequest, Principal principal);
 }

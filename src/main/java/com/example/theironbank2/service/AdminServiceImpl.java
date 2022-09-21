@@ -14,12 +14,15 @@ import com.example.theironbank2.security.requests.CreateAccountRequest;
 
 import com.example.theironbank2.security.requests.ReadBalanceRequest;
 import com.example.theironbank2.security.requests.TransferRequest;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
 @Service
+@Log
 public class AdminServiceImpl implements AdminService {
 
 
@@ -92,6 +95,7 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+
     @Override
     public Optional<CheckingAccount> checkBalance(ReadBalanceRequest readBalanceRequest) {
         var accountId = readBalanceRequest.getAccountId();
@@ -105,8 +109,7 @@ public class AdminServiceImpl implements AdminService {
         } else if (account.get().getPrimaryOwner().getId() != holderId) {
             throw new RuntimeException("You are not the owner of this account. Please try again or create a new account.");
         } else {
-            var accountToShow = checkingAccountRepository.findById(accountId);
-            return accountToShow;
+            return checkingAccountRepository.findById(accountId);
 
 
         }
@@ -117,9 +120,9 @@ public class AdminServiceImpl implements AdminService {
         var fromAccount = checkingAccountRepository.findById(transferRequest.getOriginAccount());
         var toAccount = checkingAccountRepository.findById(transferRequest.getDestinationAccount());
         if (fromAccount.isEmpty()) {
-            throw new RuntimeException("From account not found. Please try again or create a new account.");
+            throw new RuntimeException("Origin account not found. Please try again or create a new account.");
         } else if (toAccount.isEmpty()) {
-            throw new RuntimeException("To account not found. Please try again or create a new account.");
+            throw new RuntimeException("Destination account not found. Please try again or create a new account.");
         } else if (fromAccount.get().getBalance().compareTo(transferRequest.getAmount()) < 1) {
             throw new RuntimeException("Insufficient funds. Please try again or create a new account.");
         } else {
@@ -136,6 +139,45 @@ public class AdminServiceImpl implements AdminService {
             transferDTO.setAmount(transferRequest.getAmount());
             transferDTO.setDescription(transferRequest.getDescription());
             return transferDTO;
+
+        }
+    }
+
+    @Override
+    public TransferDTO saveMoney(TransferRequest transferRequest) {
+        var fromAccount = checkingAccountRepository.findById(transferRequest.getOriginAccount());
+        var toAccount = savingsAccountRepository.findById(transferRequest.getDestinationAccount());
+        var fromAccountType = transferRequest.getOriginAccountType();
+        var toAccountType = transferRequest.getDestinationAccountType();
+        Optional<AccountHolder> owner = accountHolderRepository.findById(fromAccount.get().getPrimaryOwner().getId());
+        Optional<AccountHolder> owner2 = accountHolderRepository.findById(toAccount.get().getPrimaryOwner().getId());
+        if (fromAccount.isEmpty()) {
+            throw new RuntimeException("Origin account not found. Please try again or create a new account.");
+        } else if (toAccount.isEmpty()) {
+            throw new RuntimeException("Destination savings account not found. Please try again or create a new savings account.");
+        } else if (fromAccount.get().getBalance().compareTo(transferRequest.getAmount()) < 1) {
+            throw new RuntimeException("Insufficient funds. Please try again or create a new account.");
+        } else {
+            if(owner.equals(owner2)){
+            var fromAccountBalance = fromAccount.get().getBalance();
+            var toAccountBalance = toAccount.get().getBalance();
+            fromAccount.get().setBalance(fromAccountBalance.subtract(transferRequest.getAmount()));
+            toAccount.get().setBalance(toAccountBalance.add(transferRequest.getAmount()));
+            checkingAccountRepository.save(fromAccount.get());
+            savingsAccountRepository.save(toAccount.get());
+            var transferDTO = new TransferDTO();
+            transferDTO.setStatus("Congratulations, you have just saved money!");
+            transferDTO.setFromAccount(String.valueOf(fromAccount.get().getId()));
+            transferDTO.setFromAccountType(fromAccountType);
+            transferDTO.setToAccount(String.valueOf(toAccount.get().getId()));
+            transferDTO.setToAccountType(toAccountType);
+            transferDTO.setAmount(transferRequest.getAmount());
+            transferDTO.setDescription(transferRequest.getDescription());
+            log.info("Account {} has just saved money to account {}"+ fromAccount.get().getId().toString() + toAccount.get().getId().toString());
+            return transferDTO;}
+            else{
+                throw new RuntimeException("You are not the owner of this account. Please try again or create a new account.");
+            }
 
         }
     }

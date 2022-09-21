@@ -25,7 +25,7 @@ public class CreateAccountRequest {
 
     BigDecimal balance;
 
-    String secretKey;
+//    String secretKey;
 
     @Enumerated(EnumType.STRING)
     Status status;

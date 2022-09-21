@@ -16,10 +16,8 @@ import java.util.List;
 @Service
 public class CheckingAccountServiceImpl implements CheckingAccountService {
 
-    @Autowired
     AccountHolderRepository accountHolderRepository;
 
-    @Autowired
     CheckingAccountRepository checkingAccountRepository;
 
 

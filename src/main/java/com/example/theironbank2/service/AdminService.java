@@ -23,6 +23,9 @@ public interface AdminService {
 
     SavingsAccountDTO createSavingsAccount(CreateAccountRequest createAccountRequest);
 
+    TransferDTO saveMoney(TransferRequest transferRequest);
+
+
 //    CheckingAccountDTO makeTransfer(ReadBalanceRequest readBalanceRequest, Principal principal);
 
 
