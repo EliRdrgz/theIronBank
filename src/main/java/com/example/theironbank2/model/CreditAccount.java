@@ -22,7 +22,6 @@ public class CreditAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //min balance 250
     private BigDecimal balance;
 
     @ManyToOne

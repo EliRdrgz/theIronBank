@@ -38,8 +38,8 @@ public class AdminController {
 
 
     @GetMapping("/hello")
-    private String hello(Principal principal){
-        return "Hello " + principal.getName()+ " wellcome back (:";
+    private String hello(){
+        return "<h1> Wellcome to IRONBANK 2.0</h1>";
     }
 
 

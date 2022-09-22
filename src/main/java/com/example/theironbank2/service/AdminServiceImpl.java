@@ -95,7 +95,6 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
-
     @Override
     public Optional<CheckingAccount> checkBalance(ReadBalanceRequest readBalanceRequest) {
         var accountId = readBalanceRequest.getAccountId();

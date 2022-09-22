@@ -6,7 +6,6 @@ import com.example.theironbank2.repository.AccountHolderRepository;
 import com.example.theironbank2.repository.CheckingAccountRepository;
 import com.example.theironbank2.security.requests.CreateAccountRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -16,9 +15,16 @@ import java.util.List;
 @Service
 public class CheckingAccountServiceImpl implements CheckingAccountService {
 
-    AccountHolderRepository accountHolderRepository;
 
-    CheckingAccountRepository checkingAccountRepository;
+    private final AccountHolderRepository accountHolderRepository;
+
+
+    private final CheckingAccountRepository checkingAccountRepository;
+
+    public CheckingAccountServiceImpl(AccountHolderRepository accountHolderRepository, CheckingAccountRepository checkingAccountRepository) {
+        this.accountHolderRepository = accountHolderRepository;
+        this.checkingAccountRepository = checkingAccountRepository;
+    }
 
 
     //    I want to create a method to find all accounts by primary owner that is the user logged in.

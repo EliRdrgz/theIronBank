@@ -142,8 +142,8 @@ public class AccountHolderServiceImpl implements AccountHolderService {
 
     @Override
     public TransferDTO withdrawMoney(TransferRequest transferRequest, Principal principal) {
-        var fromAccount = savingsAccountRepository.findById(transferRequest.getDestinationAccount());
-        var toAccount = checkingAccountRepository.findById(transferRequest.getOriginAccount());
+        var fromAccount = savingsAccountRepository.findById(transferRequest.getOriginAccount());
+        var toAccount = checkingAccountRepository.findById(transferRequest.getDestinationAccount());
         var toAccountType = transferRequest.getDestinationAccountType();
         var fromAccountType = transferRequest.getOriginAccountType();
         var fromAccountKeycloakId = accountHolderRepository.findById(fromAccount.get().getPrimaryOwner().getId()).get().getKeycloakId();

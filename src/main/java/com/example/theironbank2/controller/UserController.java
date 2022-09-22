@@ -2,6 +2,7 @@ package com.example.theironbank2.controller;
 
 import com.example.theironbank2.dto.CheckingAccountDTO;
 import com.example.theironbank2.dto.SavingsAccountDTO;
+import com.example.theironbank2.dto.TransferDTO;
 import com.example.theironbank2.model.AccountHolder;
 import com.example.theironbank2.model.CheckingAccount;
 import com.example.theironbank2.model.SavingsAccount;
@@ -66,13 +67,14 @@ public class UserController {
         return accountHolderService.checkMyBalance(readBalanceRequest, principal);
     }
 
+    // no muestra nada en pantalla...
     @PostMapping("/transfer")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void makeTransfer(@RequestBody TransferRequest transferRequest, Principal principal) {
         accountHolderService.makeTransfer(transferRequest, principal);
     }
 
-    //TODO: fix this method
+
 
     @GetMapping("/show-my-checkingaccounts")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -80,23 +82,24 @@ public class UserController {
         return checkingAccountService.findAllByPrimaryOwner(principal);
     }
 
-    //TODO: fix this method
+
     @GetMapping("/show-my-savingsaccounts")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public List<SavingsAccountDTO> showMySavingsAccounts(Principal principal) {
         return savingsAccountService.findAllByPrimaryOwner(principal);
     }
 
+    //no muestra nada por pantalla
     @PostMapping("/save-money")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void saveMoney(@RequestBody TransferRequest transferRequest, Principal principal) {
-        accountHolderService.saveMoney(transferRequest, principal);
+    public TransferDTO saveMoney(@RequestBody TransferRequest transferRequest, Principal principal) {
+       return accountHolderService.saveMoney(transferRequest, principal);
     }
 
     @PostMapping("/withdraw-money")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void withdrawMoney(@RequestBody TransferRequest transferRequest, Principal principal) {
-        accountHolderService.withdrawMoney(transferRequest, principal);
+    public TransferDTO withdrawMoney(@RequestBody TransferRequest transferRequest, Principal principal) {
+        return accountHolderService.withdrawMoney(transferRequest, principal);
     }
 
 }
