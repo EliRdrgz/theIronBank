@@ -1,9 +1,7 @@
 package com.example.theironbank2.controller;
 
-import com.example.theironbank2.dto.CheckingAccountDTO;
+import com.example.theironbank2.dto.*;
 
-import com.example.theironbank2.dto.SavingsAccountDTO;
-import com.example.theironbank2.dto.TransferDTO;
 import com.example.theironbank2.model.CheckingAccount;
 import com.example.theironbank2.security.requests.CreateAccountRequest;
 import com.example.theironbank2.security.requests.CreateUserRequest;
@@ -61,6 +59,18 @@ public class AdminController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public SavingsAccountDTO createSavingsAccount(@RequestBody CreateAccountRequest createAccountRequest ) {
         return adminService.createSavingsAccount(createAccountRequest);
+    }
+
+    @PostMapping("/create/credit-account")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public CreditAccountDTO createCreditAccount(@RequestBody CreateAccountRequest createAccountRequest ) {
+        return adminService.createCreditAccount(createAccountRequest);
+    }
+
+    @PostMapping("/create/student-account")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public StudentsAccountDTO createStudentAccount(@RequestBody CreateAccountRequest createAccountRequest ) {
+        return adminService.createStudentAccount(createAccountRequest);
     }
 
 

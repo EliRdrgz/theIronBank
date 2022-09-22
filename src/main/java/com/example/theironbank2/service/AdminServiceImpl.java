@@ -1,14 +1,14 @@
 package com.example.theironbank2.service;
 
-import com.example.theironbank2.dto.CheckingAccountDTO;
-import com.example.theironbank2.dto.SavingsAccountDTO;
-import com.example.theironbank2.dto.TransferDTO;
+import com.example.theironbank2.dto.*;
 import com.example.theironbank2.enums.AccountType;
 import com.example.theironbank2.model.AccountHolder;
 import com.example.theironbank2.model.CheckingAccount;
+import com.example.theironbank2.model.CreditAccount;
 import com.example.theironbank2.model.SavingsAccount;
 import com.example.theironbank2.repository.AccountHolderRepository;
 import com.example.theironbank2.repository.CheckingAccountRepository;
+import com.example.theironbank2.repository.CreditAccountRepository;
 import com.example.theironbank2.repository.SavingsAccountRepository;
 import com.example.theironbank2.security.requests.CreateAccountRequest;
 
@@ -28,6 +28,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     AccountHolderRepository accountHolderRepository;
+
+    @Autowired
+    CreditAccountRepository creditAccountRepository;
 
     @Autowired
     CheckingAccountRepository checkingAccountRepository;
@@ -93,6 +96,64 @@ public class AdminServiceImpl implements AdminService {
             }
         }
 
+    }
+
+
+    @Override
+    public CreditAccountDTO createCreditAccount(CreateAccountRequest createAccountRequest) {
+        var ownerId = createAccountRequest.getAccountHolderId();
+        var type = createAccountRequest.getAccountType();
+        Optional<AccountHolder> owner = accountHolderRepository.findById(ownerId);
+        if (owner.isEmpty()) {
+            throw new RuntimeException("Owner not found. Please try again or create a new owner.");
+        } else {
+            if(type == AccountType.CREDIT) {
+                var entity = new CreditAccount();
+                entity.setBalance(createAccountRequest.getBalance());
+                entity.setPrimaryOwner(owner.get());
+                entity.setStatus(createAccountRequest.getStatus());
+                var storedCreditAccount = creditAccountRepository.save(entity);
+                var creditAccountDTO = new CreditAccountDTO();
+                creditAccountDTO.setId(storedCreditAccount.getId());
+                creditAccountDTO.setCreationDate(storedCreditAccount.getCreationDate());
+                creditAccountDTO.setBalance(storedCreditAccount.getBalance());
+                creditAccountDTO.setPrimaryOwner(storedCreditAccount.getPrimaryOwner());
+                creditAccountDTO.setStatus(String.valueOf(storedCreditAccount.getStatus()));
+                return creditAccountDTO;
+
+            } else{
+                throw new RuntimeException("Account type not found. Please try again or create a new account type.");
+            }
+        }
+    }
+
+    @Override
+    public StudentsAccountDTO createStudentAccount(CreateAccountRequest createAccountRequest) {
+        var ownerId = createAccountRequest.getAccountHolderId();
+        var type = createAccountRequest.getAccountType();
+        var age = createAccountRequest.getDateOfBirth();
+        Optional<AccountHolder> owner = accountHolderRepository.findById(ownerId);
+        if (owner.isEmpty()) {
+            throw new RuntimeException("Owner not found. Please try again or create a new owner.");
+        } else {
+            if(type == AccountType.CREDIT) {
+                var entity = new CreditAccount();
+                entity.setBalance(createAccountRequest.getBalance());
+                entity.setPrimaryOwner(owner.get());
+                entity.setStatus(createAccountRequest.getStatus());
+                var storedCreditAccount = creditAccountRepository.save(entity);
+                var creditAccountDTO = new CreditAccountDTO();
+                creditAccountDTO.setId(storedCreditAccount.getId());
+                creditAccountDTO.setCreationDate(storedCreditAccount.getCreationDate());
+                creditAccountDTO.setBalance(storedCreditAccount.getBalance());
+                creditAccountDTO.setPrimaryOwner(storedCreditAccount.getPrimaryOwner());
+                creditAccountDTO.setStatus(String.valueOf(storedCreditAccount.getStatus()));
+                return creditAccountDTO;
+
+            } else{
+                throw new RuntimeException("Account type not found. Please try again or create a new account type.");
+            }
+        }
     }
 
     @Override
@@ -180,4 +241,5 @@ public class AdminServiceImpl implements AdminService {
 
         }
     }
+
 }

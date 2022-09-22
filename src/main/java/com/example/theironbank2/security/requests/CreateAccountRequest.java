@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,10 +26,13 @@ public class CreateAccountRequest {
 
     BigDecimal balance;
 
+    private String dateOfBirth;
+
 //    String secretKey;
 
     @Enumerated(EnumType.STRING)
     Status status;
+
 
 
 

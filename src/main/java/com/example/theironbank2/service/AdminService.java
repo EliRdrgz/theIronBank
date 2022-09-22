@@ -1,8 +1,6 @@
 package com.example.theironbank2.service;
 
-import com.example.theironbank2.dto.CheckingAccountDTO;
-import com.example.theironbank2.dto.SavingsAccountDTO;
-import com.example.theironbank2.dto.TransferDTO;
+import com.example.theironbank2.dto.*;
 import com.example.theironbank2.model.CheckingAccount;
 import com.example.theironbank2.security.requests.CreateAccountRequest;
 import com.example.theironbank2.security.requests.ReadBalanceRequest;
@@ -24,6 +22,10 @@ public interface AdminService {
     SavingsAccountDTO createSavingsAccount(CreateAccountRequest createAccountRequest);
 
     TransferDTO saveMoney(TransferRequest transferRequest);
+
+    CreditAccountDTO createCreditAccount(CreateAccountRequest createAccountRequest);
+
+    StudentsAccountDTO createStudentAccount(CreateAccountRequest createAccountRequest);
 
 
 //    CheckingAccountDTO makeTransfer(ReadBalanceRequest readBalanceRequest, Principal principal);

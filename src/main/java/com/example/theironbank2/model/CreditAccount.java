@@ -30,6 +30,8 @@ public class CreditAccount {
     //si no se usa
     private final int penaltyFee = 40;
 
+    private BigDecimal interestRate = new BigDecimal("0.2");
+
     @CreationTimestamp
     private Instant creationDate;
 
