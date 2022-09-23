@@ -6,15 +6,11 @@ import com.example.theironbank2.model.CheckingAccount;
 import com.example.theironbank2.security.requests.*;
 import com.example.theironbank2.security.service.KeycloakAdminClientService;
 import com.example.theironbank2.service.AdminService;
-import com.example.theironbank2.service.CheckingAccountService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.Optional;
 
 @RestController
@@ -22,14 +18,15 @@ import java.util.Optional;
 public class AdminController {
 
 
-    @Autowired
-    CheckingAccountService checkingAccountService;
+    private final AdminService adminService;
 
-    @Autowired
-    AdminService adminService;
 
-    @Autowired
-    KeycloakAdminClientService kcAdminClient;
+    private final KeycloakAdminClientService kcAdminClient;
+
+    public AdminController(AdminService adminService, KeycloakAdminClientService kcAdminClient) {
+        this.adminService = adminService;
+        this.kcAdminClient = kcAdminClient;
+    }
 
 
     @GetMapping("/hello")

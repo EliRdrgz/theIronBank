@@ -1,6 +1,5 @@
 package com.example.theironbank2.dto;
 
-import com.example.theironbank2.model.AccountHolder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

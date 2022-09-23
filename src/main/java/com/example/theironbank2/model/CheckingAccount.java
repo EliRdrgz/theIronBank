@@ -1,6 +1,5 @@
 package com.example.theironbank2.model;
 
-import com.example.theironbank2.enums.AccountType;
 import com.example.theironbank2.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

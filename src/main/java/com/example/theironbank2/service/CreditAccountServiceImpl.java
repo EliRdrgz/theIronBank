@@ -1,9 +1,7 @@
 package com.example.theironbank2.service;
 
 import com.example.theironbank2.dto.CreditAccountDTO;
-import com.example.theironbank2.dto.SavingsAccountDTO;
 import com.example.theironbank2.model.CreditAccount;
-import com.example.theironbank2.model.SavingsAccount;
 import com.example.theironbank2.repository.AccountHolderRepository;
 import com.example.theironbank2.repository.CreditAccountRepository;
 import org.springframework.stereotype.Service;

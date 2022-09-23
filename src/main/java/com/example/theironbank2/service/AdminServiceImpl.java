@@ -18,6 +18,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -133,7 +134,7 @@ public class AdminServiceImpl implements AdminService {
             throw new RuntimeException("Owner not found. Please try again or create a new owner.");
         } else if (account.isEmpty()) {
             throw new RuntimeException("Account not found. Please try again or create a new account.");
-        } else if (account.get().getPrimaryOwner().getId() != holderId) {
+        } else if (!Objects.equals(account.get().getPrimaryOwner().getId(), holderId)) {
             throw new RuntimeException("You are not the owner of this account. Please try again or create a new account.");
         } else {
             return checkingAccountRepository.findById(accountId);
@@ -178,11 +179,7 @@ public class AdminServiceImpl implements AdminService {
         var toAccountType = transferRequest.getDestinationAccountType();
         Optional<AccountHolder> owner = accountHolderRepository.findById(fromAccount.get().getPrimaryOwner().getId());
         Optional<AccountHolder> owner2 = accountHolderRepository.findById(toAccount.get().getPrimaryOwner().getId());
-        if (fromAccount.isEmpty()) {
-            throw new RuntimeException("Origin account not found. Please try again or create a new account.");
-        } else if (toAccount.isEmpty()) {
-            throw new RuntimeException("Destination savings account not found. Please try again or create a new savings account.");
-        } else if (fromAccount.get().getBalance().compareTo(transferRequest.getAmount()) < 1) {
+        if (fromAccount.get().getBalance().compareTo(transferRequest.getAmount()) < 1) {
             throw new RuntimeException("Insufficient funds. Please try again or create a new account.");
         } else {
             if(owner.equals(owner2)){

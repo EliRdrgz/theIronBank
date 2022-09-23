@@ -4,13 +4,13 @@ import com.example.theironbank2.dto.CheckingAccountDTO;
 import com.example.theironbank2.dto.CreditAccountDTO;
 import com.example.theironbank2.dto.SavingsAccountDTO;
 import com.example.theironbank2.dto.TransferDTO;
-import com.example.theironbank2.model.AccountHolder;
+
 import com.example.theironbank2.model.CheckingAccount;
-import com.example.theironbank2.model.SavingsAccount;
+
 import com.example.theironbank2.security.config.KeycloakProvider;
 import com.example.theironbank2.security.requests.LoginRequest;
 import com.example.theironbank2.security.requests.ReadBalanceRequest;
-import com.example.theironbank2.security.requests.ShowAccountsRequest;
+
 import com.example.theironbank2.security.requests.TransferRequest;
 import com.example.theironbank2.service.AccountHolderService;
 import com.example.theironbank2.service.CheckingAccountService;
@@ -18,7 +18,6 @@ import com.example.theironbank2.service.CreditAccountService;
 import com.example.theironbank2.service.SavingsAccountService;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.AccessTokenResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,21 +33,25 @@ import java.util.Optional;
 public class UserController {
 
 
-    @Autowired
-    AccountHolderService accountHolderService;
 
-    @Autowired
-    CheckingAccountService checkingAccountService;
+    private final AccountHolderService accountHolderService;
 
-    @Autowired
-    SavingsAccountService savingsAccountService;
 
-    @Autowired
-    CreditAccountService creditAccountService;
+    private final CheckingAccountService checkingAccountService;
+
+
+    private final SavingsAccountService savingsAccountService;
+
+
+    private final CreditAccountService creditAccountService;
 
     private final KeycloakProvider kcProvider;
 
-    public UserController(KeycloakProvider kcProvider) {
+    public UserController(AccountHolderService accountHolderService, CheckingAccountService checkingAccountService, SavingsAccountService savingsAccountService, CreditAccountService creditAccountService, KeycloakProvider kcProvider) {
+        this.accountHolderService = accountHolderService;
+        this.checkingAccountService = checkingAccountService;
+        this.savingsAccountService = savingsAccountService;
+        this.creditAccountService = creditAccountService;
         this.kcProvider = kcProvider;
     }
 
