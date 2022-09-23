@@ -27,7 +27,6 @@ public class CheckingAccountServiceImpl implements CheckingAccountService {
     }
 
 
-    //    I want to create a method to find all accounts by primary owner that is the user logged in.
     @Override
     public List<CheckingAccountDTO> findAllByPrimaryOwner(Principal principal) {
         var allMyAccounts = checkingAccountRepository.findByPrimaryOwner_KeycloakId(principal.getName());
@@ -38,6 +37,7 @@ public class CheckingAccountServiceImpl implements CheckingAccountService {
             accountDTO.setPrimaryOwnerId(account.getPrimaryOwner().getId());
             accountDTO.setId(account.getId());
             accountDTO.setStatus(account.getStatus().toString());
+            accountDTO.setCreationDate(account.getCreationDate());
             allMyAccountsDTO.add(accountDTO);
         }
         return allMyAccountsDTO;

@@ -19,7 +19,6 @@ public class SavingsAccountDTO {
     private BigDecimal balance;
     private Instant creationDate;
     private String status;
-    private AccountHolder primaryOwner;
     private Long primaryOwnerId;
 
 }

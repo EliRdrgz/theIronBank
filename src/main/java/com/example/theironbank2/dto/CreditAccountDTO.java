@@ -17,9 +17,10 @@ public class CreditAccountDTO {
 
     private Long id;
     private BigDecimal balance;
-    private Instant creationDate;
+    private String creationDate;
     private String status;
     private AccountHolder primaryOwner;
     private Long primaryOwnerId;
+    private BigDecimal interestRate;
 
 }

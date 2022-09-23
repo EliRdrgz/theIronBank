@@ -3,10 +3,7 @@ package com.example.theironbank2.controller;
 import com.example.theironbank2.dto.*;
 
 import com.example.theironbank2.model.CheckingAccount;
-import com.example.theironbank2.security.requests.CreateAccountRequest;
-import com.example.theironbank2.security.requests.CreateUserRequest;
-import com.example.theironbank2.security.requests.ReadBalanceRequest;
-import com.example.theironbank2.security.requests.TransferRequest;
+import com.example.theironbank2.security.requests.*;
 import com.example.theironbank2.security.service.KeycloakAdminClientService;
 import com.example.theironbank2.service.AdminService;
 import com.example.theironbank2.service.CheckingAccountService;
@@ -67,11 +64,6 @@ public class AdminController {
         return adminService.createCreditAccount(createAccountRequest);
     }
 
-    @PostMapping("/create/student-account")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public StudentsAccountDTO createStudentAccount(@RequestBody CreateAccountRequest createAccountRequest ) {
-        return adminService.createStudentAccount(createAccountRequest);
-    }
 
 
     @GetMapping("/balance")

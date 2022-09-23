@@ -1,6 +1,7 @@
 package com.example.theironbank2.controller;
 
 import com.example.theironbank2.dto.CheckingAccountDTO;
+import com.example.theironbank2.dto.CreditAccountDTO;
 import com.example.theironbank2.dto.SavingsAccountDTO;
 import com.example.theironbank2.dto.TransferDTO;
 import com.example.theironbank2.model.AccountHolder;
@@ -13,6 +14,7 @@ import com.example.theironbank2.security.requests.ShowAccountsRequest;
 import com.example.theironbank2.security.requests.TransferRequest;
 import com.example.theironbank2.service.AccountHolderService;
 import com.example.theironbank2.service.CheckingAccountService;
+import com.example.theironbank2.service.CreditAccountService;
 import com.example.theironbank2.service.SavingsAccountService;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.AccessTokenResponse;
@@ -40,6 +42,9 @@ public class UserController {
 
     @Autowired
     SavingsAccountService savingsAccountService;
+
+    @Autowired
+    CreditAccountService creditAccountService;
 
     private final KeycloakProvider kcProvider;
 
@@ -89,7 +94,13 @@ public class UserController {
         return savingsAccountService.findAllByPrimaryOwner(principal);
     }
 
-    //no muestra nada por pantalla
+     @GetMapping("/show-my-creditsaccounts")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<CreditAccountDTO> showMyCreditAccounts(Principal principal) {
+        return creditAccountService.findAllByPrimaryOwner(principal);
+    }
+
+
     @PostMapping("/save-money")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public TransferDTO saveMoney(@RequestBody TransferRequest transferRequest, Principal principal) {

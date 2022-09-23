@@ -25,13 +25,4 @@ public interface AdminService {
 
     CreditAccountDTO createCreditAccount(CreateAccountRequest createAccountRequest);
 
-    StudentsAccountDTO createStudentAccount(CreateAccountRequest createAccountRequest);
-
-
-//    CheckingAccountDTO makeTransfer(ReadBalanceRequest readBalanceRequest, Principal principal);
-
-
-
-
-//    CheckingAccountDTO modifyBalance(CreateUserRequest.ModifyBalanceRequest modifyBalanceRequest);
 }

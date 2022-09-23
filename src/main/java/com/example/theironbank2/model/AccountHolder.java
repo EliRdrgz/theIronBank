@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Entity
@@ -23,6 +26,7 @@ public class AccountHolder {
     private String name;
 
     private String dateOfBirth;
+    
 
     @Embedded
     private Address primaryAddress;
@@ -30,7 +34,6 @@ public class AccountHolder {
     @OneToMany(mappedBy = "primaryOwner")
     @JsonIgnore
     private List<CheckingAccount> checkingAccounts;
-
 
 
 }

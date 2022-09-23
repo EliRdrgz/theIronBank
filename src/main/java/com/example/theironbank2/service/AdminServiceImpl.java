@@ -56,9 +56,7 @@ public class AdminServiceImpl implements AdminService {
                 var checkingAccountDTO = new CheckingAccountDTO();
                 checkingAccountDTO.setId(storedCheckingAccount.getId());
                 checkingAccountDTO.setCreationDate(storedCheckingAccount.getCreationDate());
-                checkingAccountDTO.setPenaltyFee(storedCheckingAccount.getPenaltyFee());
                 checkingAccountDTO.setBalance(storedCheckingAccount.getBalance());
-                checkingAccountDTO.setPrimaryOwner(storedCheckingAccount.getPrimaryOwner());
                 checkingAccountDTO.setStatus(String.valueOf(storedCheckingAccount.getStatus()));
                 return checkingAccountDTO;
 
@@ -87,7 +85,6 @@ public class AdminServiceImpl implements AdminService {
                 savingsAccountDTO.setId(storedCheckingAccount.getId());
                 savingsAccountDTO.setCreationDate(storedCheckingAccount.getCreationDate());
                 savingsAccountDTO.setBalance(storedCheckingAccount.getBalance());
-                savingsAccountDTO.setPrimaryOwner(storedCheckingAccount.getPrimaryOwner());
                 savingsAccountDTO.setStatus(String.valueOf(storedCheckingAccount.getStatus()));
                 return savingsAccountDTO;
 
@@ -115,38 +112,8 @@ public class AdminServiceImpl implements AdminService {
                 var storedCreditAccount = creditAccountRepository.save(entity);
                 var creditAccountDTO = new CreditAccountDTO();
                 creditAccountDTO.setId(storedCreditAccount.getId());
-                creditAccountDTO.setCreationDate(storedCreditAccount.getCreationDate());
+                creditAccountDTO.setCreationDate(storedCreditAccount.getCreationDate().toString());
                 creditAccountDTO.setBalance(storedCreditAccount.getBalance());
-                creditAccountDTO.setPrimaryOwner(storedCreditAccount.getPrimaryOwner());
-                creditAccountDTO.setStatus(String.valueOf(storedCreditAccount.getStatus()));
-                return creditAccountDTO;
-
-            } else{
-                throw new RuntimeException("Account type not found. Please try again or create a new account type.");
-            }
-        }
-    }
-
-    @Override
-    public StudentsAccountDTO createStudentAccount(CreateAccountRequest createAccountRequest) {
-        var ownerId = createAccountRequest.getAccountHolderId();
-        var type = createAccountRequest.getAccountType();
-        var age = createAccountRequest.getDateOfBirth();
-        Optional<AccountHolder> owner = accountHolderRepository.findById(ownerId);
-        if (owner.isEmpty()) {
-            throw new RuntimeException("Owner not found. Please try again or create a new owner.");
-        } else {
-            if(type == AccountType.CREDIT) {
-                var entity = new CreditAccount();
-                entity.setBalance(createAccountRequest.getBalance());
-                entity.setPrimaryOwner(owner.get());
-                entity.setStatus(createAccountRequest.getStatus());
-                var storedCreditAccount = creditAccountRepository.save(entity);
-                var creditAccountDTO = new CreditAccountDTO();
-                creditAccountDTO.setId(storedCreditAccount.getId());
-                creditAccountDTO.setCreationDate(storedCreditAccount.getCreationDate());
-                creditAccountDTO.setBalance(storedCreditAccount.getBalance());
-                creditAccountDTO.setPrimaryOwner(storedCreditAccount.getPrimaryOwner());
                 creditAccountDTO.setStatus(String.valueOf(storedCreditAccount.getStatus()));
                 return creditAccountDTO;
 

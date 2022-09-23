@@ -20,10 +20,8 @@ public class CheckingAccountDTO {
 
     private Long id;
     private BigDecimal balance;
-    private int penaltyFee;
     private Instant creationDate;
     private String status;
-    private AccountHolder primaryOwner;
     private Long primaryOwnerId;
 
 }

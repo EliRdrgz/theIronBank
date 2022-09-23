@@ -22,7 +22,6 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     }
 
 
-    //TODO: fix this method
     @Override
     public List<SavingsAccountDTO> findAllByPrimaryOwner(Principal principal) {
         var allMyAccounts = savingsAccountRepository.findByPrimaryOwner_KeycloakId(principal.getName());
@@ -33,6 +32,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
             accountDTO.setPrimaryOwnerId(account.getPrimaryOwner().getId());
             accountDTO.setId(account.getId());
             accountDTO.setStatus(account.getStatus().toString());
+            accountDTO.setCreationDate(account.getCreationDate());
             allMyAccountsDTO.add(accountDTO);
         }
         return allMyAccountsDTO;
