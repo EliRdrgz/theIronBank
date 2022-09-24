@@ -53,3 +53,7 @@ Contiene las clases que se encargan de la autenticación y autorización de los 
 
 ![](src/main/resources/diagram.png)
 
+## 4. ESQUEMA DE ENDPOINTS:
+
+http://localhost:8090/docs/swagger-ui/index.html#/ 
+
